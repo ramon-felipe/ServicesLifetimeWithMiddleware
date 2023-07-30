@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using ServicesLifetime;
+using ServicesLifetime.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,9 @@ builder.Services.AddSingleton<IOperationSingleton, Operation>();
 
 var app = builder.Build();
 
+app.UseMyMiddleware();
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -30,11 +34,13 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseMyMiddleware();
-
 app.MapGet("/{id:int}", (int id) =>
 {
     Console.WriteLine($"Hello World!: {id}");
+});
+
+app.MapGet("/errorTest", () => {
+    throw new Exception("Throwing just for fun");
 });
 
 app.MapGet("/GetWeatherForecast", (IWeatherService service, IAnotherService anotherService) =>
