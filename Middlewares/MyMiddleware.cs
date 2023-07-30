@@ -1,4 +1,4 @@
-﻿namespace ServicesLifetime;
+﻿namespace ServicesLifetime.Middlewares;
 
 public class MyMiddleware
 {
